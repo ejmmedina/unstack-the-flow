@@ -4,19 +4,19 @@
 
 ## Executive Summary
 
-With the emergence of Industry 4.0, there is an influx of online searches on how to get, process, and analyze data - with StackOverflow as one of the most popular platforms in addressing these questions.  The research aims to **answer the question on uncovering the underlying themes in the top posts about Python in StackOverflow in the last five years**. 
+With the emergence of Industry 4.0, there is an influx of online searches on how to get, process, and analyze data - with StackOverflow as one of the most popular platforms in addressing these questions.  The research aims to **answer the question on uncovering the underlying themes in the top posts about Python in StackOverflow in the last five years**.
 
 In accomplishing the research question, data was gathered from both the StackOverflow website (through web scraping) and the StackExchange data dump - summing up to a total of 18 million posted questions. This was further narrowed down to a total of 1.3 million posted questions pertaining to Python. From this, a random sample of 10K posts was used in determining the natural grouping of the topics. To prove the robustness of the random sampling, the Jaccard index of which was derived, which resulted to roughly 70%.
 
 Term Frequency–Inverse Document Frequency (TF-IDF) on the post titles was used to vectorize the data. Truncated Singular Value Decomposition (TSVD) was further implemented for dimensionality reduction. Lastly, a two-fold clustering algorithm was implemented through the KMeans clustering method
-    
+
    * **Level1:**  using numeric features
-    
-   * **Level2:** using thematic features. 
-    
+
+   * **Level2:** using thematic features.
+
 To summarize, Top "How To" topics in Python can be categorized into 5 namely: `Hot Post`, `Trending`, `S.O.S.`, `Curious Topics`, and `Spam`. The topics that were found in most of the 5 categories are `Pandas`, `NumPy`, `Django`, `Matplotlib`, and `String Processing`. There are topics that are endemic to one category like `Classes` but there are also those that are ubiquitous like `Django`
 
-Results may aid students, enthusiasts, and academicians in targeting topics to focus on and further develop literature and programs to address the demand for these queries. 
+Results may aid students, enthusiasts, and academicians in targeting topics to focus on and further develop literature and programs to address the demand for these queries.
 
 ## Table of Contents
 
@@ -40,20 +40,20 @@ Results may aid students, enthusiasts, and academicians in targeting topics to f
 
 **Background on Stack Overflow**
 
-StackOverflow is a platform owned by the StackExchange Network where students, professionals, and enthusiasts exchange information regarding programming through posts, queries, and comments. It also serves as a platform for programmers and businesses to collaborate and work on projects. 
+StackOverflow is a platform owned by the StackExchange Network where students, professionals, and enthusiasts exchange information regarding programming through posts, queries, and comments. It also serves as a platform for programmers and businesses to collaborate and work on projects.
 
 
 With roughly 18 million posted questions, it is a comprehensive network of programmers across the field. Given this wide network of programmers, StackOverflow has been the ‘go to’ website for programmers to clarify and further understand programming algorithms and its syntax.
 
 **Motivation of the study**
 
-Anyone wishing to pursue a career in Data Science would have to master programming and any student of the Master of Science in Data Science (MSDS) program has at least visited StackOverflow once within the duration of the program. Given that the primary language used in class is Python, the group was particularly interested in looking into the data of StackOverflow. Aligning this interest with the projevct specifications, the group further established that primary purpose of the study is further illustrate the key areas of improvement in learning Python as a programming language. This would, hopefully, aid the program and its coordinators in further strengthening the curriculum design for MSDS for the upcoming batches. 
+Anyone wishing to pursue a career in Data Science would have to master programming and any student of the Master of Science in Data Science (MSDS) program has at least visited StackOverflow once within the duration of the program. Given that the primary language used in class is Python, the group was particularly interested in looking into the data of StackOverflow. Aligning this interest with the projevct specifications, the group further established that primary purpose of the study is further illustrate the key areas of improvement in learning Python as a programming language. This would, hopefully, aid the program and its coordinators in further strengthening the curriculum design for MSDS for the upcoming batches.
 
 
 **Research problem**
 
 The study wishes to exemplify and answer the research question:
-    
+
     What are the themes of the top 'how to' questions about Python in StackOverflow in the last five years?
 
 **Objectives of the study**
@@ -65,7 +65,7 @@ In answering the research question, the group shall accomplish the following:
 
 **Scope and delimitations**
 
-Given the primary objectives of the study, the study is only focused towards questions pertaining to Python. The study is, however, delimited to questions posted within the span of 5 years (2014 - 2019). It is further narrowed down to questions pertaining to Python. 
+Given the primary objectives of the study, the study is only focused towards questions pertaining to Python. The study is, however, delimited to questions posted within the span of 5 years (2014 - 2019). It is further narrowed down to questions pertaining to Python.
 
 
 ```python
@@ -98,7 +98,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.manifold import TSNE
 
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from sklearn.cluster import KMeans
 import warnings
@@ -141,7 +141,7 @@ Due to the size of the data, the posts were already filtered into only the quest
 
 The focus of the problem is on the themes of Python questions. However, even after filtering `python` tags, **1.3M** Python questions remain. As such, sampling will be implemented in order to minimize the amount of posts to analyze.
 
-However, sampling carries the risk of underrepresenting the dataset. As such, robustness tests were performed. Appendix B contains further details of the test but it is sufficient to know that the tests resulted in high similarities between the different sampled corpus. And so, we can proceed on analyzing 10000 sampled posts instead of the whole dataset. 
+However, sampling carries the risk of underrepresenting the dataset. As such, robustness tests were performed. Appendix B contains further details of the test but it is sufficient to know that the tests resulted in high similarities between the different sampled corpus. And so, we can proceed on analyzing 10000 sampled posts instead of the whole dataset.
 
 
 ```python
@@ -160,7 +160,7 @@ while len(posts) < 1e4:
     # We want to minimize the number of iterations we have to go through to
     # sample while minimizing bias of consecutive posts. Per iteration, around
     # tens of samples are obtained.
-    cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions 
+    cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions
                 WHERE tags LIKE "%python%"
                 AND AcceptedAnswerId IS NOT NULL
                 AND Id BETWEEN {idx*1000} AND {idx*1000+999}
@@ -170,7 +170,7 @@ while len(posts) < 1e4:
 
 # Convert data to DataFrame
 df_X0 = pd.DataFrame(posts, columns=['Id', 'PostTypeId', 'AcceptedAnswerId',
-                                     'CreationDate', 'Score', 'ViewCount', 
+                                     'CreationDate', 'Score', 'ViewCount',
                                      'Body', 'OwnerUserId',
                                      'LastEditorUserId', 'LastEditDate',
                                      'LastActivityDate', 'Title', 'Tags',
@@ -194,7 +194,7 @@ sns.pairplot(X0_num);
 ```
 
 
-![png](output_10_0.png)
+![png](output_img_main/output_10_0.png)
 
 
 From the pairplots, there are no features that have a high correlation with each other. This observation tells us that we can use the features with little fear of overfitting.
@@ -209,13 +209,13 @@ Now looking at the distribution of values, three features stand out: `Score`, `V
 fig, ax = plt.subplots(1, 3, figsize=(16, 4))
 feats_log = ['Score', 'ViewCount', 'FavoriteCount']
 for feat in feats_log:
-    sns.distplot(X0_num[feat].apply(lambda x: np.log(x+1-X0_num[feat].min())), 
+    sns.distplot(X0_num[feat].apply(lambda x: np.log(x+1-X0_num[feat].min())),
                  ax=ax[feats_log.index(feat)]);
 ax[0].set_ylabel("Normalized frequency");
 ```
 
 
-![png](output_12_0.png)
+![png](output_img_main/output_12_0.png)
 
 
 Log-scaling `Score` and `ViewCount` has improved their distribution of values. Taking a closer look at the features,
@@ -326,7 +326,7 @@ X0_num.describe()
 
 
 
-Note that even up to the 75% quartile, `FavoriteCount` still has a value of 0, meaning most of the posts in the dataset has 0 number of users that favored the post. The non-zero proportion of the posts are small. Moreover, the distribution of the values are not bad (this was simply not apparent due to the high count at zero) and so it is not necessary to rescale the feature. As such, only the features `Score` and `ViewCount` will be log-scaled. 
+Note that even up to the 75% quartile, `FavoriteCount` still has a value of 0, meaning most of the posts in the dataset has 0 number of users that favored the post. The non-zero proportion of the posts are small. Moreover, the distribution of the values are not bad (this was simply not apparent due to the high count at zero) and so it is not necessary to rescale the feature. As such, only the features `Score` and `ViewCount` will be log-scaled.
 
 
 ```python
@@ -348,7 +348,7 @@ ax.set_ylabel('Feature value');
 ```
 
 
-![png](output_18_0.png)
+![png](output_img_main/output_18_0.png)
 
 
 The values of each feature are not comparable to each other. And so, MinMaxScaler will be used.
@@ -379,7 +379,7 @@ ax.set_xlabel('Count');
 ```
 
 
-![png](output_23_0.png)
+![png](output_img_main/output_23_0.png)
 
 
 Note that the filter on the posts apply to tags `python`, `python-3.x` and `python-2.7`. The most common tag, of course, is `python` since relatively fewer people qualify the version of the Python they are using. Other common tags are the commonly used libraries or functionalities in Python.
@@ -416,7 +416,7 @@ ax[1].set_title('After cleaning');
 ```
 
 
-![png](output_26_0.png)
+![png](output_img_main/output_26_0.png)
 
 
 The importance of stopwords can be seen from the top 10 common words in the corpus where the words in the uncleaned corpus lack interpretability.
@@ -454,7 +454,7 @@ ax[1].set_title('After cleaning');
 ```
 
 
-![png](output_29_0.png)
+![png](output_img_main/output_29_0.png)
 
 
 One observation from this is the high count values which when compared with `Title`, the `Body` will overwhelm the features from `Title`. While this can be remedied by normalizing for each document separately, a second observation where the top words in the `Body` are commands in Python that are excessively used like `print`, `def`, or `import`. As such, this does not give much context to the post. On account of both these observations and the number of features that will be added by using the `Body`, only `Title` and `Tags` are used as features in analysis of the non-numerical features.
@@ -476,14 +476,14 @@ PC_analysis(Xnum_data);
 ```
 
 
-![png](output_34_0.png)
+![png](output_img_main/output_34_0.png)
 
 
 Using the standard of having $80\%$ of the variance captured, the design matrix will be truncated into 2 components (which can be easily visualized in 2D plots).
 
 
 ```python
-# Visualize the truncated data along with the directions of the original 
+# Visualize the truncated data along with the directions of the original
 # features
 
 pca = TruncatedSVD(n_components=2)
@@ -501,7 +501,7 @@ ax1.axis('off');
 ```
 
 
-![png](output_36_0.png)
+![png](output_img_main/output_36_0.png)
 
 
 Using TSVD, the first PC (x-axis) is a combination mainly of two features: Score and ViewCount, while the second PC is also a combination of these and CommentCount. The largest variability, though, is found along ViewCount. Other features like Score and CommentCount can be considered as the features perpendicular to this. From this, it is expected for clusters to form for different views and for different engagement/interaction levels (combination of Score, CommentCount).
@@ -516,7 +516,7 @@ For this analysis, K-Means is used to cluster the stackoverflow questions based 
 # optimal number of clusters
 
 k_start, k_stop = (2, 10)
-kmeans_cluster = cluster_range(Xnum_data, KMeans(random_state=1337), 
+kmeans_cluster = cluster_range(Xnum_data, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)  
 ```
 
@@ -528,7 +528,7 @@ plot_internal(kmeans_cluster, k_start=k_start, k_stop=k_stop);
 ```
 
 
-![png](output_40_0.png)
+![png](output_img_main/output_40_0.png)
 
 
 From the internal validations, taking into account the tradeoffs since we want low inertias, low intra-to-inter, high calinski-harabasz, and high silhouette, $k=5$ is chosen. The figure on the right shows the proportions of the clusters for different number of clusters. From these we could see how balanced the clusters are where for $k=5$ yields 4 clusters that have similar sizes and one that is small.
@@ -611,7 +611,7 @@ ax6.set_axis_off()
 ```
 
 
-![png](output_42_0.png)
+![png](output_img_main/output_42_0.png)
 
 
 From these classifications, we can drill down into what the broad themes are across posts with different viewership and engagement levels.
@@ -667,7 +667,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_50_0.png)
+![png](output_img_main/output_50_0.png)
 
 
 
@@ -686,7 +686,7 @@ For the non-numerical clustering, K-Means clustering is also used. By normalizin
 # Perform internal validations on different number of clusters to obtain the
 # optimal number of clusters
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -697,7 +697,7 @@ plot_internal(X3_kmeans_cluster, k_start=k_start, k_stop=k_stop);
 ```
 
 
-![png](output_54_0.png)
+![png](output_img_main/output_54_0.png)
 
 
 From the internal validations, $k=6$ is chosen due to the high CH and silhouette while having low SSE and intra-to-inter ratio. There is a very large cluster, though, constituting more than two-thirds of the posts.
@@ -732,7 +732,7 @@ for i in range(k):
 ```
 
 
-![png](output_57_0.png)
+![png](output_img_main/output_57_0.png)
 
 
 The wordcloud contains the most common features for each cluster. Note that the largest cluster contains several subtopics which can be further broken down into subclusters. The other clusters, on the other hand, are well-defined and usually pertains to a specific module or functionality of python.
@@ -830,7 +830,7 @@ ax[9, 0].annotate('$Mix$', xy=(0.3, 0.5),
 ```
 
 
-![png](output_61_0.png)
+![png](output_img_main/output_61_0.png)
 
 
 From the wordclouds, we can see the common topics across posts of different levels of view and engagement. Based on the number of numerical clusters a topic is found in, the most common themes are: `django`, `pandas`, `numpy`, `matplotlib`, and `string processing`. Several insights can be further gleaned from this.
@@ -843,14 +843,14 @@ The numerical clustering has resulted to the following groups:`hot posts`,`Trend
 
     2) Niche themes (S.O.S) are topics that are always searched in StackOverflow but have low user engagement such as Tkinter, Django, Selenium and Web Engines. We hypothesize that the low user engagement may be due to lack of experts on these topics. In particular, web interfaces and web engines topics are only found on this cluster, so the low number of experts may be even more applicable to these.
 
-    3) On the opposite are Curious Topics which are not searched often but have high levels of engagement. A particular topic of focus is the class topic which corresponds to the object-oriented programming. This topic is generally not used by the general python learners, particularly the beginners, leading to the low views. However, due to the flexibility of classes, there is high engagement (therefore, it is part of Curious Topics). 
+    3) On the opposite are Curious Topics which are not searched often but have high levels of engagement. A particular topic of focus is the class topic which corresponds to the object-oriented programming. This topic is generally not used by the general python learners, particularly the beginners, leading to the low views. However, due to the flexibility of classes, there is high engagement (therefore, it is part of Curious Topics).
 
 **On non-numerical clustering**
 
 
 The non-numerical clustering is represented through the different rows presented in the Word Cloud above. This clustering was done based on the texts found within each post in the website. For row-wise analysis, the following are observed (per topic):
 
-    1) Looking at the non-numerical clusters relative to the different numerical clusters, there is an apparent variation in the topics classified each groupings. For example for the numpy clusters, the `Trending`, `S.O.S`, and `Curious Topics` also have scipy along with numpy. However, for the `Hot` posts, the scipy feature is not visible. This can be attributed to the target of scipy which is the scientific community, a smaller proportion of the programming community. 
+    1) Looking at the non-numerical clusters relative to the different numerical clusters, there is an apparent variation in the topics classified each groupings. For example for the numpy clusters, the `Trending`, `S.O.S`, and `Curious Topics` also have scipy along with numpy. However, for the `Hot` posts, the scipy feature is not visible. This can be attributed to the target of scipy which is the scientific community, a smaller proportion of the programming community.
 
     2) Aside from the case of SciPy, string processing occurs for three different numerical clusters but the most frequent features vary. This is an artifact of the diverse functionalities of string processing, some more viewed than others. For example, the regex feature is very prominent in the Curious Topics which means it has low views but high engagement, implying that most posts on regex are not searched frequently but the questions posted about it have high number of answers, comments, etc, which is also due to the number of solutions to regex questions.
 
@@ -858,23 +858,23 @@ The non-numerical clustering is represented through the different rows presented
 
 ## Conclusions and Recommendations
 
-To summarize, Top "How To" topics in Python can be categorized into 5 namely: `Hot Post`, `Trending`, `S.O.S.`, `Curious Topics`, and `Spam`. The topics that were found in most of the 5 categories are `Pandas`, `NumPy`, `Django`, `Matplotlib`, and `String Processing`. There are topics that are endemic to one category like `Classes` but there are also those that are ubiquitous like `Django`. The following results may be attributed to the nature of each topic with regards to its user engagement. 
+To summarize, Top "How To" topics in Python can be categorized into 5 namely: `Hot Post`, `Trending`, `S.O.S.`, `Curious Topics`, and `Spam`. The topics that were found in most of the 5 categories are `Pandas`, `NumPy`, `Django`, `Matplotlib`, and `String Processing`. There are topics that are endemic to one category like `Classes` but there are also those that are ubiquitous like `Django`. The following results may be attributed to the nature of each topic with regards to its user engagement.
 
-Looking at the numerical clustering as a representation of the user engagements, the following recommendations are drawn primarily on the premise of the demand for the answers on the topics classified under each clusters and the supply of questions on it. 
+Looking at the numerical clustering as a representation of the user engagements, the following recommendations are drawn primarily on the premise of the demand for the answers on the topics classified under each clusters and the supply of questions on it.
 
 - **For students, it is recommended for them to focus learning the topics from `hot posts`.**
-    
+
     This is because these posts yielded to high user engagement. Meaning, topics under which are the most frequently asked and thus reflect the most common concerns regarding Python. Nonetheless, these posts are also the ones with the most responses which would reflect that there is a rich literature and resources which students may refer to in clarifying their concerns.
-    
+
 - **For academicians, focus on building on the student's skills with respect to `hot posts` and develop dynamic curricula that builds on `S.O.S.`**
-   
-   As previously discussed, `hot posts` is suggestive of the general consensus with regards to the questions and clarifications with regards to Python. With this, in establishing the core competency of students in terms of programming, it is essential for these key topics to be well established and mastered by the students. 
-    
+
+   As previously discussed, `hot posts` is suggestive of the general consensus with regards to the questions and clarifications with regards to Python. With this, in establishing the core competency of students in terms of programming, it is essential for these key topics to be well established and mastered by the students.
+
     On the other hand, `S.O.S.` posts are those with a lot of views but with minimal enagement. Given this, it may be said that these are the questions that not much people are knowledgeable about but are in high demand. Hence, developing curricula on these would provide the students with a competitive advantage within the industry.
-    
-    
+
+
 - **For professionals, focus on developing your skills based on `S.O.S.` and `Curious Topics`**
-    
+
     As previously discussed, harnessing skills on the topics classified under `S.O.S.` provides an individual a competitive advantage compared to others who are using the same programming language. Moreover, developing on the `Curious Topics` are those with little views but with high engagement. These are the posts with a lot of ongoing discussion but with minimal searches - which may suggest recurring problems or niche topics. As a professional, mastering these would make one even more marketable against all other most especially since these topics are in high demand but with limited available references within StackOverflow.
 
 
@@ -922,5 +922,3 @@ HTML('''<script>
   });
 </script>
 <form action="javascript:code_toggle()"><input type="submit" id="toggleButton" value="Show Code"></form>
-
-

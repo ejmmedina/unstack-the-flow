@@ -1,6 +1,6 @@
 ## Appendix B. Robustness Test
 
-Due to the size of the database (**1.3M** python questions), sampling is done. 
+Due to the size of the database (**1.3M** python questions), sampling is done.
 However, due to the random nature of sampling, robustness of the sampling must be checked. In particular, the features and their weights were tested as to whether the results are similar for the different trials. This was done for 20 trials. Two validations are performed.
 1. Standard deviation of top features. The weight of the top features are compared across different sampled corpus.
 2. Jaccard similarity, $\frac{A\cap B}{A\cup B}$. Using this, the total feature weights of each sampled corpus were compared with each other.
@@ -31,14 +31,14 @@ stop_words = stopwords.words('english') + ['python', 'using', 'use']
 
 def generate_samples(N, conn):
     """Sample 10000 rows from the database, vectorize the titles, reduce the
-    dimensions using truncatedSVD and store in a pickle file a dictionary 
+    dimensions using truncatedSVD and store in a pickle file a dictionary
     containing the following information:
         bow : vectorized titles
         feats : feature names corresponding to the columns of bow
         posts : the sampled rows
-        trunc_elbow : tuple containing the number of PCs retained and the 
+        trunc_elbow : tuple containing the number of PCs retained and the
             truncated design matrix using the elbow method
-        trunc_0.8 : tuple containing the number of PCs retained and the 
+        trunc_0.8 : tuple containing the number of PCs retained and the
             truncated design matrix using the 80% variance explained method
     """
     cur = conn.cursor()
@@ -52,7 +52,7 @@ def generate_samples(N, conn):
         posts = []
         while len(posts) < 1e4:
             idx = random.choice(idxs)
-            cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions 
+            cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions
                         WHERE tags LIKE "%python%"
                         AND AcceptedAnswerId IS NOT NULL
                         AND Id BETWEEN {idx*1000} AND {idx*1000+999}
@@ -112,7 +112,7 @@ feats_base = []
 for t in T:
     wgts_base.extend(list(t['bow'].toarray().sum(axis=0)))
     feats_base.extend(t['feats'])
-    
+
 top_idx = np.argsort(np.array(wgts_base))[::-1]
 top_fts = list(zip(np.array(feats_base)[top_idx], np.array(wgts_base)[top_idx]))
 top_fts = list(dict(top_fts).keys())[:10]
@@ -120,7 +120,7 @@ print(top_fts)
 ```
 
     ['list', 'django', 'file', 'error', 'function', 'string', 'pandas', 'get', 'data', 'values']
-    
+
 
 
 ```python
@@ -147,7 +147,7 @@ ax.set_xlabel("Top features");
 ```
 
 
-![png](output_6_0.png)
+![png](output_img_appB/output_6_0.png)
 
 
 Looking at the weights, the values are consistent for the top 10 features. Using StandardScaler to check how many standard deviations the minimum and the maximum are:
@@ -165,7 +165,7 @@ ax.set_xlabel("Top features");
 ```
 
 
-![png](output_8_0.png)
+![png](output_img_appB/output_8_0.png)
 
 
 From which we see the features are within 2 standard deviations.
@@ -178,7 +178,7 @@ Another method to check for robustness is to compute the pairwise Jaccard index 
 ```python
 def jaccard(A, B, feats):
     """Calculate the Jaccard index of two sampled corpus.
-    
+
     Parameters
     ----------
     A, B : dict
@@ -239,7 +239,7 @@ plt.colorbar(im, ax=ax)
 
 
 
-![png](output_12_1.png)
+![png](output_img_appB/output_12_1.png)
 
 
 From which we see pairwise Jaccard index of at least 70%

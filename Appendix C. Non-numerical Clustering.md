@@ -18,15 +18,15 @@ But first, clustering on numerical features must be done:
 
 ```python
 
-X_3 = pickle.load(open(f'/mnt/processed/private/msds2020/lt13/pickle/robustness_trials/T3', 'rb')) 
+X_3 = pickle.load(open(f'/mnt/processed/private/msds2020/lt13/pickle/robustness_trials/T3', 'rb'))
 ```
 
 
 ```python
-df_X3 = pd.DataFrame(X_3['posts'], columns = ['Id', 'PostTypeId', 'AcceptedAnswerId', 
-                     'CreationDate', 'Score', 'ViewCount', 'Body', 'OwnerUserId', 
-                     'LastEditorUserId', 'LastEditDate', 'LastActivityDate', 
-                     'Title', 'Tags', 'AnswerCount', 'CommentCount', 
+df_X3 = pd.DataFrame(X_3['posts'], columns = ['Id', 'PostTypeId', 'AcceptedAnswerId',
+                     'CreationDate', 'Score', 'ViewCount', 'Body', 'OwnerUserId',
+                     'LastEditorUserId', 'LastEditDate', 'LastActivityDate',
+                     'Title', 'Tags', 'AnswerCount', 'CommentCount',
                      'FavoriteCount', 'CommunityOwnedDate'])
 ```
 
@@ -67,14 +67,14 @@ Xnum_trunc = pca.fit_transform(Xnum_data)
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-kmeans_cluster = cluster_range(Xnum_data, KMeans(random_state=1337), 
+kmeans_cluster = cluster_range(Xnum_data, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -84,7 +84,7 @@ plot_internal(kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_9_0.png)
+![png](output_img_appC/output_9_0.png)
 
 
 
@@ -92,7 +92,7 @@ plot_internal(kmeans_cluster, k_start, k_stop);
 fig, ax = plt.subplots(figsize=(10,10))
 ax.scatter(Xnum_trunc[:,0], Xnum_trunc[:,1], alpha=0.8, c=kmeans_cluster['ys'][3]);
 #since TSNE doesn't preserve distances anyway, the axis labels doesn't matter
-ax.set_axis_off(); 
+ax.set_axis_off();
 x0, y0 = 0.2, 0.2
 s = 0.5
 for feat, feat_name in zip(pca.components_.T, ['Score(log)', 'ViewCount(log)',
@@ -108,7 +108,7 @@ for feat, feat_name in zip(pca.components_.T, ['Score(log)', 'ViewCount(log)',
 ```
 
 
-![png](output_10_0.png)
+![png](output_img_appC/output_10_0.png)
 
 
 From hereon, the clustering of non-numerical features will be performed. Note that for each cluster, vectorizing, internal validations, actual clustering, and inspection of the features for each cluster will be performed.
@@ -152,7 +152,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_15_0.png)
+![png](output_img_appC/output_15_0.png)
 
 
 
@@ -165,14 +165,14 @@ X3_bow_n = TruncatedSVD(n_components=int(n_PC)+1, random_state=1337).fit_transfo
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -182,7 +182,7 @@ plot_internal(X3_kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_18_0.png)
+![png](output_img_appC/output_18_0.png)
 
 
 
@@ -197,29 +197,29 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud = WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud = WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           collocations = False).generate_from_frequencies(word_cld)
     fig = plt.figure()
     plt.imshow(wordcloud)
     plt.axis('off')
-    
+
 ```
 
 
-![png](output_19_0.png)
+![png](output_img_appC/output_19_0.png)
 
 
 
-![png](output_19_1.png)
+![png](output_img_appC/output_19_1.png)
 
 
 
-![png](output_19_2.png)
+![png](output_img_appC/output_19_2.png)
 
 
 
-![png](output_19_3.png)
+![png](output_img_appC/output_19_3.png)
 
 
 
@@ -228,7 +228,7 @@ from wordcloud import WordCloud
 from PIL import Image
 
 k = 5
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k, k_stop=k)    
 y_kmeans = X3_kmeans_cluster['ys'][0]
 wordcloud = []
@@ -242,8 +242,8 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud.append(WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud.append(WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           colormap='YlOrRd',
                           mask=im_arr,
                           collocations = False).generate_from_frequencies(word_cld))
@@ -320,7 +320,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_26_0.png)
+![png](output_img_appC/output_26_0.png)
 
 
 
@@ -331,14 +331,14 @@ X3_bow_n = TruncatedSVD(n_components=int(n_PC)+1, random_state=1337).fit_transfo
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -348,7 +348,7 @@ plot_internal(X3_kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_29_0.png)
+![png](output_img_appC/output_29_0.png)
 
 
 
@@ -363,44 +363,44 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud = WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud = WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           collocations = False).generate_from_frequencies(word_cld)
     fig = plt.figure()
     plt.imshow(wordcloud)
     plt.axis('off')
-    
+
 ```
 
 
-![png](output_30_0.png)
+![png](output_img_appC/output_30_0.png)
 
 
 
-![png](output_30_1.png)
+![png](output_img_appC/output_30_1.png)
 
 
 
-![png](output_30_2.png)
+![png](output_img_appC/output_30_2.png)
 
 
 
-![png](output_30_3.png)
+![png](output_img_appC/output_30_3.png)
 
 
 
-![png](output_30_4.png)
+![png](output_img_appC/output_30_4.png)
 
 
 
-![png](output_30_5.png)
+![png](output_img_appC/output_30_5.png)
 
 
 
 ```python
 from wordcloud import WordCloud
 k = 6
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k, k_stop=k)    
 y_kmeans = X3_kmeans_cluster['ys'][0]
 wordcloud = []
@@ -411,8 +411,8 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud.append(WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud.append(WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           colormap='YlOrRd',
                           collocations = False).generate_from_frequencies(word_cld))
 
@@ -425,7 +425,7 @@ pickle.dump(wordcloud, open('wordcloud3','wb'))
 ```
 
     Executing k= 6
-    
+
 
 
 ```python
@@ -478,7 +478,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_36_0.png)
+![png](output_img_appC/output_36_0.png)
 
 
 
@@ -489,14 +489,14 @@ X3_bow_n = TruncatedSVD(n_components=int(n_PC)+1, random_state=1337).fit_transfo
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -506,7 +506,7 @@ plot_internal(X3_kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_39_0.png)
+![png](output_img_appC/output_39_0.png)
 
 
 
@@ -521,44 +521,44 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud = WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud = WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           collocations = False).generate_from_frequencies(word_cld)
     fig = plt.figure()
     plt.imshow(wordcloud)
     plt.axis('off')
-    
+
 ```
 
 
-![png](output_40_0.png)
+![png](output_img_appC/output_40_0.png)
 
 
 
-![png](output_40_1.png)
+![png](output_img_appC/output_40_1.png)
 
 
 
-![png](output_40_2.png)
+![png](output_img_appC/output_40_2.png)
 
 
 
-![png](output_40_3.png)
+![png](output_img_appC/output_40_3.png)
 
 
 
-![png](output_40_4.png)
+![png](output_img_appC/output_40_4.png)
 
 
 
-![png](output_40_5.png)
+![png](output_img_appC/output_40_5.png)
 
 
 
 ```python
 from wordcloud import WordCloud
 k = 6
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k, k_stop=k)    
 y_kmeans = X3_kmeans_cluster['ys'][0]
 wordcloud = []
@@ -569,8 +569,8 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud.append(WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud.append(WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           colormap='YlOrRd',
                           collocations = False).generate_from_frequencies(word_cld))
 
@@ -583,7 +583,7 @@ pickle.dump(wordcloud, open('wordcloud0','wb'))
 ```
 
     Executing k= 6
-    
+
 
 
 ```python
@@ -636,7 +636,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_46_0.png)
+![png](output_img_appC/output_46_0.png)
 
 
 
@@ -647,14 +647,14 @@ X3_bow_n = TruncatedSVD(n_components=int(n_PC)+1, random_state=1337).fit_transfo
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -664,7 +664,7 @@ plot_internal(X3_kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_49_0.png)
+![png](output_img_appC/output_49_0.png)
 
 
 
@@ -679,48 +679,48 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud = WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud = WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           collocations = False).generate_from_frequencies(word_cld)
     fig = plt.figure()
     plt.imshow(wordcloud)
     plt.axis('off')
-    
+
 ```
 
 
-![png](output_50_0.png)
+![png](output_img_appC/output_50_0.png)
 
 
 
-![png](output_50_1.png)
+![png](output_img_appC/output_50_1.png)
 
 
 
-![png](output_50_2.png)
+![png](output_img_appC/output_50_2.png)
 
 
 
-![png](output_50_3.png)
+![png](output_img_appC/output_50_3.png)
 
 
 
-![png](output_50_4.png)
+![png](output_img_appC/output_50_4.png)
 
 
 
-![png](output_50_5.png)
+![png](output_img_appC/output_50_5.png)
 
 
 
-![png](output_50_6.png)
+![png](output_img_appC/output_50_6.png)
 
 
 
 ```python
 from wordcloud import WordCloud
 k = 7
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k, k_stop=k)    
 y_kmeans = X3_kmeans_cluster['ys'][0]
 wordcloud = []
@@ -731,8 +731,8 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud.append(WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud.append(WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           colormap='YlOrRd',
                           collocations = False).generate_from_frequencies(word_cld))
 
@@ -745,7 +745,7 @@ pickle.dump(wordcloud, open('wordcloud1','wb'))
 ```
 
     Executing k= 7
-    
+
 
 
 ```python
@@ -798,7 +798,7 @@ ax, n_PC = PC_analysis(X3_data);
 ```
 
 
-![png](output_56_0.png)
+![png](output_img_appC/output_56_0.png)
 
 
 
@@ -809,14 +809,14 @@ X3_bow_n = TruncatedSVD(n_components=int(n_PC)+1, random_state=1337).fit_transfo
 
 ```python
 from scipy.spatial.distance import euclidean, cityblock
-from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score, 
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
                              calinski_harabaz_score, silhouette_score)
 from scipy.spatial.distance import euclidean
 from sklearn.cluster import KMeans
 import warnings
 warnings.filterwarnings("ignore")
 k_start, k_stop = (2, 10)
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k_start, k_stop=k_stop)    
 ```
 
@@ -826,7 +826,7 @@ plot_internal(X3_kmeans_cluster, k_start, k_stop);
 ```
 
 
-![png](output_59_0.png)
+![png](output_img_appC/output_59_0.png)
 
 
 
@@ -841,40 +841,40 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud = WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud = WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           collocations = False).generate_from_frequencies(word_cld)
     fig = plt.figure()
     plt.imshow(wordcloud)
     plt.axis('off')
-    
+
 ```
 
 
-![png](output_60_0.png)
+![png](output_img_appC/output_60_0.png)
 
 
 
-![png](output_60_1.png)
+![png](output_img_appC/output_60_1.png)
 
 
 
-![png](output_60_2.png)
+![png](output_img_appC/output_60_2.png)
 
 
 
-![png](output_60_3.png)
+![png](output_img_appC/output_60_3.png)
 
 
 
-![png](output_60_4.png)
+![png](output_img_appC/output_60_4.png)
 
 
 
 ```python
 from wordcloud import WordCloud
 k = 5
-X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337), 
+X3_kmeans_cluster = cluster_range(X3_bow_n, KMeans(random_state=1337),
                                k_start=k, k_stop=k)    
 y_kmeans = X3_kmeans_cluster['ys'][0]
 wordcloud = []
@@ -885,8 +885,8 @@ for i in range(k):
     dom_feat = np.array(tfidf_vectorizer.get_feature_names()
                         + tfidf_vectorizer_t.get_feature_names())[dom_feat]
     word_cld = {i[0]:int(i[1])+1 for i in zip(dom_feat, feat_wgt)}
-    wordcloud.append(WordCloud(width = 800, height = 800, 
-                          background_color ='white', 
+    wordcloud.append(WordCloud(width = 800, height = 800,
+                          background_color ='white',
                           colormap='YlOrRd',
                           collocations = False).generate_from_frequencies(word_cld))
 
@@ -899,7 +899,7 @@ pickle.dump(wordcloud, open('wordcloud2','wb'))
 ```
 
     Executing k= 5
-    
+
 
 
 ```python
@@ -910,5 +910,3 @@ list(np.unique(X3_kmeans_cluster['ys'][6], return_counts=True)[1])
 
 
     [121, 283, 190, 1973, 146, 148, 188, 134]
-
-
