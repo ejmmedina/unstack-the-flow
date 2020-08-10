@@ -50,7 +50,7 @@ def main():
 def FiletoDBLoad(pathname, tablename, database, filt='row'):
     """Load the XML files under `pathname` and store the attributes in the
     table `tablename` under `database`.
-    
+
     Parameters
     ----------
     pathname : str
@@ -63,7 +63,7 @@ def FiletoDBLoad(pathname, tablename, database, filt='row'):
         filters the XML file based on the filt query. default value is row
     """
     files = []
-    
+
     # Get the files under the directory "pathname"
     for r, d, f in os.walk(pathname):
         for file in f:
@@ -148,7 +148,7 @@ conn = sqlite3.connect(
     '/mnt/processed/private/msds2020/lt13/database/stackoverflow.db')
 cur = conn.cursor()
 
-cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions 
+cur.execute(f"""SELECT DISTINCT * FROM PostsQuestions
             WHERE tags LIKE "%python%"
             LIMIT 10""")
 
@@ -160,19 +160,6 @@ pd.DataFrame(cur.fetchall(), columns=names).head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -348,7 +335,7 @@ links = get_links(url, headers)
 ```python
 def scrape_stackoverflow(links, t=5):
     """Scrape each link in the list of links for the attributes stored in the
-    XML file from stackexchange archive. An optional parameter t sets the 
+    XML file from stackexchange archive. An optional parameter t sets the
     sleep time after each iteration.
     """
     data = []
@@ -462,19 +449,6 @@ df.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -590,5 +564,3 @@ df.head()
   </tbody>
 </table>
 </div>
-
-
