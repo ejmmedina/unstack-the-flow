@@ -9,4 +9,4 @@ The data used in this analysis is from StackExchange data dump and manually scra
 
 ##### Report and analysis
 
-The full report is included in the Jupyter notebook. If you have any questions regarding this study, please send me a message via <a href="mailto:elijahjustinmedina@gmail.com">e-mail</a> or <a href="https://www.linkedin.com/in/elijah-justin-medina/">LinkedIn</a>.
+The full report is included in the <a href="https://github.com/ejmmedina/unstack-the-flow/blob/master/stackoverflow-clustering-dmw.md">Jupyter notebook</a>, along with supplementary notebooks for <a href="https://github.com/ejmmedina/unstack-the-flow/blob/master/Appendix%20A.%20Data%20Wrangling.md">processing</a>, <a href="https://github.com/ejmmedina/unstack-the-flow/blob/master/Appendix%20B.%20Robustness%20Test.md">robustness test</a>, and <a href="https://github.com/ejmmedina/unstack-the-flow/blob/master/Appendix%20C.%20Non-numerical%20Clustering.md">other results</a>. If you have any questions regarding this study, please send me a message via <a href="mailto:elijahjustinmedina@gmail.com">e-mail</a> or <a href="https://www.linkedin.com/in/elijah-justin-medina/">LinkedIn</a>.
