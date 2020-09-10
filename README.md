@@ -1,4 +1,4 @@
-# Unstack the Flow, Two-level Clustering Analysis of StackOverflow Posts
+# Unstack the Flow, Two-level Cluster Analysis of StackOverflow Posts
 ##### Data Mining and Wrangling project by Ria Ysabelle Flora, James Bryan Labergas, Maria Angela Legaspi, & Elijah Justin Medina
 
 The research aims to answer the question on uncovering the underlying themes in the top posts about Python in StackOverflow in the last five years. In accomplishing the research question, data was gathered from both the StackOverflow website (through web scraping) and the StackExchange data dump - summing up to a total of 18 million posted questions. This was further narrowed down to a total of 1.3 million posted questions pertaining to Python. From this, a random sample of 10K posts was used in determining the natural grouping of the topics. To prove the robustness of the random sampling, the Jaccard index of which was derived, which resulted to roughly 70%. Results may aid students, enthusiasts, and academicians in targeting topics to focus on and further develop literature and programs to address the demand for these queries.
